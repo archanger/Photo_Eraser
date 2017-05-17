@@ -13,6 +13,10 @@
 		0E02FC081ECB07FE00526ECC /* Photo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0E02FC061ECB07FE00526ECC /* Photo.xcdatamodeld */; };
 		0E02FC0A1ECB07FE00526ECC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E02FC091ECB07FE00526ECC /* Assets.xcassets */; };
 		0E02FC0D1ECB07FE00526ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E02FC0B1ECB07FE00526ECC /* LaunchScreen.storyboard */; };
+		0E02FC151ECB203600526ECC /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E02FC141ECB203600526ECC /* PhotoService.swift */; };
+		0EC12AB81ECB24DC0050DF29 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC12AB71ECB24DC0050DF29 /* ImageCell.swift */; };
+		0EC12ABA1ECB25250050DF29 /* ImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC12AB91ECB25250050DF29 /* ImageSource.swift */; };
+		0EC12ABC1ECB33F80050DF29 /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC12ABB1ECB33F80050DF29 /* CollectionLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		0E02FC091ECB07FE00526ECC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E02FC0C1ECB07FE00526ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E02FC0E1ECB07FE00526ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E02FC141ECB203600526ECC /* PhotoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
+		0EC12AB71ECB24DC0050DF29 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		0EC12AB91ECB25250050DF29 /* ImageSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSource.swift; sourceTree = "<group>"; };
+		0EC12ABB1ECB33F80050DF29 /* CollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,10 @@
 				0E02FC0B1ECB07FE00526ECC /* LaunchScreen.storyboard */,
 				0E02FC0E1ECB07FE00526ECC /* Info.plist */,
 				0E02FC061ECB07FE00526ECC /* Photo.xcdatamodeld */,
+				0E02FC141ECB203600526ECC /* PhotoService.swift */,
+				0EC12AB71ECB24DC0050DF29 /* ImageCell.swift */,
+				0EC12AB91ECB25250050DF29 /* ImageSource.swift */,
+				0EC12ABB1ECB33F80050DF29 /* CollectionLayout.swift */,
 			);
 			path = Photo;
 			sourceTree = "<group>";
@@ -140,9 +152,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E02FC151ECB203600526ECC /* PhotoService.swift in Sources */,
 				0E02FC081ECB07FE00526ECC /* Photo.xcdatamodeld in Sources */,
 				0E02FC021ECB07FE00526ECC /* ViewController.swift in Sources */,
 				0E02FC001ECB07FE00526ECC /* AppDelegate.swift in Sources */,
+				0EC12ABC1ECB33F80050DF29 /* CollectionLayout.swift in Sources */,
+				0EC12ABA1ECB25250050DF29 /* ImageSource.swift in Sources */,
+				0EC12AB81ECB24DC0050DF29 /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +322,7 @@
 				0E02FC131ECB07FE00526ECC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

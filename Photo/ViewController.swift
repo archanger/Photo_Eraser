@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import Photos
 
 class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    _collectionView.dataSource = _dataSource
+    _collectionView.delegate = _dataSource
   }
+  
+  
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -21,5 +26,12 @@ class ViewController: UIViewController {
   }
 
 
+  @IBOutlet fileprivate weak var _collectionView: UICollectionView!
+  private var _dataSource = ImageSource()
 }
 
+extension ViewController: ImageSourceOutupt {
+  func reload() {
+    self._collectionView.reloadData()
+  }
+}
