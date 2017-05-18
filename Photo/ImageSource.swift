@@ -29,28 +29,21 @@ class ImageSource: NSObject {
       return
     }
     
-    _photoService.fetchAssets { (result) in
-      let res = result.objects(at: IndexSet(integersIn: 0..<result.count))
-      self._imageManager.startCachingImages(
-        for: res,
-        targetSize: CGSize(width: 100, height: 100),
-        contentMode: PHImageContentMode.aspectFill,
-        options: nil
-      )
+    _photoService.fetchPhotos { (result) in
       
-      self.prepareData(assets: res);
+      self.prepareData(assets: result);
     }
   }
   
-  private func prepareData(assets: [PHAsset]) {
+  private func prepareData(assets: [Photo]) {
     for asset in assets {
-      let model = ImageCellModel(id: asset.localIdentifier, source: self)
+      let model = ImageCellModel(id: asset.identifier, source: self)
       _models.append(model)
     }
     output?.reload()
   }
   
-  fileprivate var _photoService = PhotoService()
+  fileprivate var _photoService = PhotoAssetService()
   fileprivate var _imageManager = PHCachingImageManager()
   fileprivate var _models: [ImageCellModel] = []
 }

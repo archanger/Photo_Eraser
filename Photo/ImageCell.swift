@@ -18,7 +18,7 @@ class ImageCell: UICollectionViewCell {
   }
   
   func update(with model: ImageCellModel) {
-    let id = model.identifier
+    //let id = model.identifier
     model.reauestImage { (image) in
       self._imageView.image = image
     }
