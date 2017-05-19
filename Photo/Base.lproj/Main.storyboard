@@ -6,7 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,16 +34,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mr9-rZ-YAS">
-                                                    <rect key="frame" x="8" y="8" width="85" height="84"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mr9-rZ-YAS">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="Mr9-rZ-YAS" firstAttribute="top" secondItem="1Oo-Yl-EFM" secondAttribute="topMargin" id="8y8-Kc-lJK"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="Mr9-rZ-YAS" secondAttribute="trailing" constant="-51" id="KJY-sz-T96"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="Mr9-rZ-YAS" secondAttribute="bottom" constant="-50" id="L6b-Cg-wGn"/>
-                                            <constraint firstItem="Mr9-rZ-YAS" firstAttribute="leading" secondItem="1Oo-Yl-EFM" secondAttribute="leadingMargin" id="QKz-uq-bxq"/>
+                                            <constraint firstItem="Mr9-rZ-YAS" firstAttribute="top" secondItem="1Oo-Yl-EFM" secondAttribute="top" id="8y8-Kc-lJK"/>
+                                            <constraint firstAttribute="right" secondItem="Mr9-rZ-YAS" secondAttribute="right" id="KJY-sz-T96"/>
+                                            <constraint firstAttribute="bottom" secondItem="Mr9-rZ-YAS" secondAttribute="bottom" id="L6b-Cg-wGn"/>
+                                            <constraint firstItem="Mr9-rZ-YAS" firstAttribute="left" secondItem="1Oo-Yl-EFM" secondAttribute="left" id="QKz-uq-bxq"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="_imageView" destination="Mr9-rZ-YAS" id="yCz-EG-HGA"/>
@@ -60,9 +60,23 @@
                             <constraint firstItem="e4s-Ei-puN" firstAttribute="left" secondItem="8bC-Xf-vdC" secondAttribute="left" id="d9u-Nh-YYB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="O0Y-ho-nPF"/>
+                    <navigationItem key="navigationItem" id="O0Y-ho-nPF">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="trash" id="mLm-iO-k6e">
+                                <connections>
+                                    <action selector="deleteAction:" destination="BYZ-38-t0r" id="lu3-M3-NAt"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="mDO-Hj-wyh">
+                                <connections>
+                                    <action selector="refreshAction:" destination="BYZ-38-t0r" id="aPh-eg-zC7"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="_collectionView" destination="e4s-Ei-puN" id="nQ7-mI-Ryc"/>
+                        <outlet property="_trashButton" destination="mLm-iO-k6e" id="blW-m8-F3m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -112,7 +126,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Vpz-eR-bgl"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="show" id="30a-D4-6ms"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="imagesToDelete" id="30a-D4-6ms"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U7c-QQ-wUJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

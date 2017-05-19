@@ -11,6 +11,7 @@ import Photos
 
 protocol ImageSourceOutupt: class {
   func reload()
+  func canRemove(_ yesNo: Bool)
 }
 
 class ImageSource: NSObject {
@@ -23,47 +24,54 @@ class ImageSource: NSObject {
     _photoService.requestAuth(completion: onRequestCompletion(status:))
   }
   
+  func deleteSelected() {
+    _photoService.remove(photos: _modelsToDelete.map({ $0.value })) { success in
+      if success == true {
+        DispatchQueue.main.async {
+          self.onRequestCompletion(status: true)
+        }
+      }
+    }
+  }
+  
+  func fetchNewBatch() {
+    onRequestCompletion(status: true)
+  }
+  
   private func onRequestCompletion(status: Bool) {
     guard status == true else {
       print("Сам дурак")
       return
     }
     
+    _models.forEach({ $0.shown = true })
+    _photoService.update(photos: _models)
+    
     _photoService.fetchPhotos { (result) in
-      
       self.prepareData(assets: result);
     }
   }
   
   private func prepareData(assets: [Photo]) {
-    for asset in assets {
-      let model = ImageCellModel(id: asset.identifier, source: self)
-      _models.append(model)
-    }
-    output?.reload()
+  
+    _models = assets
+    _modelsToDelete.removeAll()
+    self.output?.reload()
+    output?.canRemove(false)
   }
   
-  fileprivate var _photoService = PhotoAssetService()
-  fileprivate var _imageManager = PHCachingImageManager()
-  fileprivate var _models: [ImageCellModel] = []
+  fileprivate func _imageCellModel(from photo: Photo) -> ImageCellModel {
+    return ImageCellModel(id: photo.identifier, source: self)
+  }
+  
+  fileprivate var _photoService = PhotoService()
+  fileprivate var _models: [Photo] = []
+  fileprivate var _modelsToDelete: [IndexPath: Photo] = [:]
 }
 
 extension ImageSource: ImageCellModelDatasource {
   func image(for id: String, completion: @escaping (UIImage?) -> Void) {
-    _photoService.fetchAsset(by: id) { (result) in
-      if let asset = result.firstObject, asset.mediaType == .image {
-        self._imageManager.requestImage(
-          for: asset,
-          targetSize: CGSize(width: 100, height: 100),
-          contentMode: PHImageContentMode.aspectFill,
-          options: nil,
-          resultHandler: { (image, info) in
-            completion(image)
-        })
-      } else {
-        completion(nil)
-      }
-    }
+    _photoService.requestImage(for: id, completion: completion)
   }
 }
 
@@ -73,7 +81,7 @@ extension ImageSource: UICollectionViewDelegate, UICollectionViewDataSource {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCell
     let data = _models[indexPath.row]
   
-    cell.update(with: data)
+    cell.update(with: _imageCellModel(from: data))
   
     return cell
   }
@@ -84,5 +92,17 @@ extension ImageSource: UICollectionViewDelegate, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return _models.count
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
+    if cell.chosen == true {
+      _modelsToDelete.removeValue(forKey: indexPath)
+      cell.chosen = false
+    } else {
+      _modelsToDelete[indexPath] = _models[indexPath.item]
+      cell.chosen = true
+    }
+    output?.canRemove(_modelsToDelete.count > 0)
   }
 }

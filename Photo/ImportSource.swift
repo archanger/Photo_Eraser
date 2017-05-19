@@ -8,7 +8,13 @@
 
 import Foundation
 
+protocol ImportOutput: class {
+  func updateFinished()
+}
+
 class ImportSource {
+  
+  weak var output: ImportOutput?
   
   init() {
     _service = PhotoService()
@@ -26,6 +32,7 @@ class ImportSource {
     }
     
     _service.update()
+    output?.updateFinished()
   }
   
   private var _service: PhotoService

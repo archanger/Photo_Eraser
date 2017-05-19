@@ -13,6 +13,10 @@ class ImportViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
    
+    navigationController?.setNavigationBarHidden(true, animated: false)
+   
+    _source.output = self
+   
     _source.update()
   }
   
@@ -22,4 +26,10 @@ class ImportViewController: UIViewController {
   }
   
   private var _source = ImportSource()
+}
+
+extension ImportViewController: ImportOutput {
+  func updateFinished() {
+    self.performSegue(withIdentifier: "imagesToDelete", sender: self)
+  }
 }

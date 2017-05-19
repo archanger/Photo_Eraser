@@ -6,7 +6,7 @@
 //  Copyright © 2017 Appreal LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Photos
 
 class PhotoAssetService {
@@ -31,22 +31,101 @@ class PhotoAssetService {
     let assets = PHAsset.fetchAssets(with: .image, options: options)
     var photos: [Photo] = []
     
+    var assetsToCache: [PHAsset] = []
     assets.enumerateObjects({ (asset, v, w) in
       photos.append(Photo(from: asset))
+      assetsToCache.append(asset)
     })
+    
+    let cache_options = PHImageRequestOptions()
+//    cache_options.isNetworkAccessAllowed = true
+    
+    _imageManager.startCachingImages(
+      for: assetsToCache,
+      targetSize: CGSize(width: 200, height: 200),
+      contentMode: .aspectFit,
+      options: cache_options
+    )
     
     completion(photos)
   }
   
+  func fetchThumbImage(by id: String, completion: @escaping (UIImage?) -> Void) {
+    
+    if let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).lastObject {
+      
+      let cache_options = PHImageRequestOptions()
+//      cache_options.isNetworkAccessAllowed = true
+      _imageManager.requestImage(
+        for: asset,
+        targetSize: CGSize(width: 200, height: 200),
+        contentMode: .aspectFit,
+        options: cache_options,
+        resultHandler: { (image, info) in
+          completion(image)
+      })
+      
+    } else {
+      completion(nil)
+    }
+  }
   
+  func fetchOriginImage(by id: String, completion: @escaping (UIImage?) -> Void) {
+    if let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).lastObject {
+      
+      let cache_options = PHImageRequestOptions()
+      cache_options.isNetworkAccessAllowed = true
+      _imageManager.requestImage(
+        for: asset,
+        targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight),
+        contentMode: .aspectFit,
+        options: cache_options,
+        resultHandler: { (image, info) in
+          completion(image)
+      })
+      
+    } else {
+      completion(nil)
+    }
+  }
   
-  func fetchAsset(by id: String, completion: @escaping (PHFetchResult<PHAsset>) -> Void) {
+  func fetchAsset(by id: String, completion: @escaping (Photo?) -> Void) {
     fetchAssets(by: [id], completion: completion)
   }
   
-  func fetchAssets(by ids: [String], completion: @escaping (PHFetchResult<PHAsset>) -> Void) {
-    completion(PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil))
+  func fetchAssets(by ids: [String], completion: @escaping (Photo?) -> Void) {
+    let asset = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil).lastObject
+    if let asset = asset {
+      let cache_options = PHImageRequestOptions()
+      cache_options.isNetworkAccessAllowed = true
+      _imageManager.startCachingImages(
+        for: [asset],
+        targetSize: CGSize(width: 200, height: 200),
+        contentMode: .aspectFit,
+        options: cache_options
+      )
+      completion(Photo(from: asset))
+    } else {
+      completion(nil)
+    }
   }
+  
+  func delete(photos: [Photo], completion: @escaping (Error?) -> Void) {
+    
+    PHPhotoLibrary.shared().performChanges({ 
+      let assets = PHAsset.fetchAssets(withLocalIdentifiers: photos.map({ $0.identifier }), options: nil)
+      PHAssetChangeRequest.deleteAssets(assets)
+    }) { (success, error) in
+      print("Done: \(success)\nError: \(error?.localizedDescription ?? "")")
+      completion(error)
+    }
+  }
+  
+  deinit {
+    _imageManager.stopCachingImagesForAllAssets()
+  }
+  
+  private var _imageManager = PHCachingImageManager()
 }
 
 extension Photo {

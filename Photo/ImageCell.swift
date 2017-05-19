@@ -10,6 +10,18 @@ import UIKit
 
 class ImageCell: UICollectionViewCell {
   
+  var chosen: Bool = false {
+    didSet {
+      if chosen {
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.red.cgColor
+      } else {
+        layer.borderWidth = 0
+        layer.borderColor = UIColor.red.cgColor
+      }
+    }
+  }
+  
   override func prepareForReuse() {
     super.prepareForReuse()
     

@@ -45,6 +45,12 @@ class CollectionLayout: UICollectionViewLayout {
     }
   }
   
+  override func invalidateLayout() {
+    super.invalidateLayout()
+    
+    _cache.removeAll()
+  }
+  
   override var collectionViewContentSize: CGSize {
     return CGSize(width: contentWidth, height: contentHeight)
   }
