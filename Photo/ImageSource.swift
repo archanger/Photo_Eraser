@@ -80,8 +80,9 @@ extension ImageSource: UICollectionViewDelegate, UICollectionViewDataSource {
   
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCell
     let data = _models[indexPath.row]
-  
-    cell.update(with: _imageCellModel(from: data))
+    let m = _imageCellModel(from: data)
+    m.selected = _modelsToDelete[indexPath] != nil
+    cell.update(with: m)
   
     return cell
   }
@@ -96,13 +97,17 @@ extension ImageSource: UICollectionViewDelegate, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
-    if cell.chosen == true {
-      _modelsToDelete.removeValue(forKey: indexPath)
-      cell.chosen = false
+    
+    if _modelsToDelete[indexPath] == nil {
+      _modelsToDelete[indexPath] = _models[indexPath.row]
     } else {
-      _modelsToDelete[indexPath] = _models[indexPath.item]
-      cell.chosen = true
+      _modelsToDelete.removeValue(forKey: indexPath)
     }
+    
+    let m = _imageCellModel(from: _models[indexPath.row])
+    m.selected = _modelsToDelete[indexPath] != nil
+    cell.update(with: m)
+    
     output?.canRemove(_modelsToDelete.count > 0)
   }
 }

@@ -13,6 +13,7 @@
 		0E02FC081ECB07FE00526ECC /* Photo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0E02FC061ECB07FE00526ECC /* Photo.xcdatamodeld */; };
 		0E02FC0A1ECB07FE00526ECC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E02FC091ECB07FE00526ECC /* Assets.xcassets */; };
 		0E02FC0D1ECB07FE00526ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E02FC0B1ECB07FE00526ECC /* LaunchScreen.storyboard */; };
+		0E1DB7681ED4367F005DDE18 /* PhotoAssetCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1DB7671ED4367F005DDE18 /* PhotoAssetCacheService.swift */; };
 		0E5FC6461ECDBE4B00B4F8DF /* DBManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5FC6451ECDBE4B00B4F8DF /* DBManger.swift */; };
 		0E5FC6491ECDC50600B4F8DF /* PhotoDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5FC6481ECDC50600B4F8DF /* PhotoDBService.swift */; };
 		0E5FC6551ECDC64200B4F8DF /* PhotoAssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5FC6541ECDC64200B4F8DF /* PhotoAssetService.swift */; };
@@ -39,6 +40,7 @@
 		0E02FC091ECB07FE00526ECC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E02FC0C1ECB07FE00526ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E02FC0E1ECB07FE00526ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E1DB7671ED4367F005DDE18 /* PhotoAssetCacheService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAssetCacheService.swift; sourceTree = "<group>"; };
 		0E5FC6451ECDBE4B00B4F8DF /* DBManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManger.swift; sourceTree = "<group>"; };
 		0E5FC6481ECDC50600B4F8DF /* PhotoDBService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDBService.swift; sourceTree = "<group>"; };
 		0E5FC6541ECDC64200B4F8DF /* PhotoAssetService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAssetService.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				0E5FC6541ECDC64200B4F8DF /* PhotoAssetService.swift */,
 				0E5FC6481ECDC50600B4F8DF /* PhotoDBService.swift */,
 				0E5FC6731ECDE4CA00B4F8DF /* PhotoService.swift */,
+				0E1DB7671ED4367F005DDE18 /* PhotoAssetCacheService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				0EC12AB81ECB24DC0050DF29 /* ImageCell.swift in Sources */,
 				0E5FC6631ECDC85A00B4F8DF /* DBPhoto+CoreDataClass.swift in Sources */,
 				0E5FC6661ECDCFD500B4F8DF /* CDQL.swift in Sources */,
+				0E1DB7681ED4367F005DDE18 /* PhotoAssetCacheService.swift in Sources */,
 				0E5FC66E1ECDD48600B4F8DF /* DBInfo+CoreDataProperties.swift in Sources */,
 				0E5FC6701ECDE3D400B4F8DF /* ImportViewController.swift in Sources */,
 			);

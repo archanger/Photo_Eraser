@@ -59,6 +59,30 @@ class PhotoDbService {
     _infoService.update(date: lastDate)
   }
   
+  func updateDB(with photos: [Photo]) {
+    
+    guard photos.count > 0 else {
+      return
+    }
+    
+    _manager.makeTransaction { (context) in
+      
+      let requestToDelete: NSFetchRequest<DBPhoto> = DBPhoto.fetchRequest()
+      requestToDelete.predicate = NSPredicate(format: "NOT (identifier IN %@)", argumentArray: [photos.map({ $0.identifier })])
+      
+      let resultForDeleting = try! context.fetch(requestToDelete)
+      for p in resultForDeleting {
+        context.delete(p)
+      }
+    }
+    
+    let lastDate = self._infoService.fetchLastDate()
+    let newPhotos = photos.filter({ $0.createdDate > lastDate })
+    
+    insert(photos: newPhotos)
+    
+  }
+  
   func update(photos: [Photo]) {
     
     _manager.makeTransaction { (context) in

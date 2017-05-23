@@ -25,7 +25,7 @@ class PhotoService {
   func update() {
     
     let lastDate = _infoService.fetchLastDate()
-    _assetService.fetchPhotos(from: lastDate, completion: _dbService.insert(photos:))
+    _assetService.fetchPhotos(from: lastDate, completion: _dbService.updateDB(with:))
   }
   
   

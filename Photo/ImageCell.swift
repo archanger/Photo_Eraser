@@ -10,18 +10,6 @@ import UIKit
 
 class ImageCell: UICollectionViewCell {
   
-  var chosen: Bool = false {
-    didSet {
-      if chosen {
-        layer.borderWidth = 2
-        layer.borderColor = UIColor.red.cgColor
-      } else {
-        layer.borderWidth = 0
-        layer.borderColor = UIColor.red.cgColor
-      }
-    }
-  }
-  
   override func prepareForReuse() {
     super.prepareForReuse()
     
@@ -29,11 +17,20 @@ class ImageCell: UICollectionViewCell {
     
   }
   
+  private func setChosen(yesNo: Bool) {
+    layer.borderWidth = yesNo ? 2 : 0
+    layer.borderColor = UIColor.red.cgColor
+  }
+  
   func update(with model: ImageCellModel) {
     //let id = model.identifier
     model.reauestImage { (image) in
-      self._imageView.image = image
+      DispatchQueue.main.async {
+        self._imageView.image = image
+      }
     }
+    setChosen(yesNo: model.selected)
+    
   }
   
   @IBOutlet fileprivate weak var _imageView: UIImageView!
@@ -45,6 +42,7 @@ protocol ImageCellModelDatasource {
 
 class ImageCellModel {
   var identifier: String
+  var selected: Bool = false
   
   func reauestImage(completion: @escaping (UIImage?) -> Void) {
     self.delegate.image(for: self.identifier, completion: completion)

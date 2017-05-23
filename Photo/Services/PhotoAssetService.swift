@@ -26,48 +26,28 @@ class PhotoAssetService {
   
   func fetchPhotos(from date: Date = Date.init(timeIntervalSince1970: 0), completion: @escaping ([Photo]) -> Void) {
     let options = PHFetchOptions()
-    options.predicate = NSPredicate(format: "creationDate > %@", argumentArray: [date])
+//    options.predicate = NSPredicate(format: "creationDate > %@", argumentArray: [date])
     options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
     let assets = PHAsset.fetchAssets(with: .image, options: options)
     var photos: [Photo] = []
     
-    var assetsToCache: [PHAsset] = []
+    var idsToWarmUp: [String] = []
     assets.enumerateObjects({ (asset, v, w) in
       photos.append(Photo(from: asset))
-      assetsToCache.append(asset)
+      idsToWarmUp.append(asset.localIdentifier)
     })
     
-    let cache_options = PHImageRequestOptions()
-//    cache_options.isNetworkAccessAllowed = true
     
-    _imageManager.startCachingImages(
-      for: assetsToCache,
-      targetSize: CGSize(width: 200, height: 200),
-      contentMode: .aspectFit,
-      options: cache_options
-    )
+    _cache.clear()
+    _cache.warmup(with: idsToWarmUp)
     
     completion(photos)
   }
   
   func fetchThumbImage(by id: String, completion: @escaping (UIImage?) -> Void) {
+
+    _cache.image(for: id, completion: completion)
     
-    if let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).lastObject {
-      
-      let cache_options = PHImageRequestOptions()
-//      cache_options.isNetworkAccessAllowed = true
-      _imageManager.requestImage(
-        for: asset,
-        targetSize: CGSize(width: 200, height: 200),
-        contentMode: .aspectFit,
-        options: cache_options,
-        resultHandler: { (image, info) in
-          completion(image)
-      })
-      
-    } else {
-      completion(nil)
-    }
   }
   
   func fetchOriginImage(by id: String, completion: @escaping (UIImage?) -> Void) {
@@ -126,6 +106,7 @@ class PhotoAssetService {
   }
   
   private var _imageManager = PHCachingImageManager()
+  private var _cache = PhotoAssetCacheService()
 }
 
 extension Photo {
