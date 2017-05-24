@@ -69,26 +69,26 @@ class PhotoAssetService {
     }
   }
   
-  func fetchAsset(by id: String, completion: @escaping (Photo?) -> Void) {
-    fetchAssets(by: [id], completion: completion)
-  }
-  
-  func fetchAssets(by ids: [String], completion: @escaping (Photo?) -> Void) {
-    let asset = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil).lastObject
-    if let asset = asset {
-      let cache_options = PHImageRequestOptions()
-      cache_options.isNetworkAccessAllowed = true
-      _imageManager.startCachingImages(
-        for: [asset],
-        targetSize: CGSize(width: 200, height: 200),
-        contentMode: .aspectFit,
-        options: cache_options
-      )
-      completion(Photo(from: asset))
-    } else {
-      completion(nil)
-    }
-  }
+//  func fetchAsset(by id: String, completion: @escaping (Photo?) -> Void) {
+//    fetchAssets(by: [id], completion: completion)
+//  }
+//  
+//  func fetchAssets(by ids: [String], completion: @escaping (Photo?) -> Void) {
+//    let asset = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil).lastObject
+//    if let asset = asset {
+//      let cache_options = PHImageRequestOptions()
+//      cache_options.isNetworkAccessAllowed = true
+//      _imageManager.startCachingImages(
+//        for: [asset],
+//        targetSize: CGSize(width: 200, height: 200),
+//        contentMode: .aspectFit,
+//        options: cache_options
+//      )
+//      completion(Photo(from: asset))
+//    } else {
+//      completion(nil)
+//    }
+//  }
   
   func delete(photos: [Photo], completion: @escaping (Error?) -> Void) {
     

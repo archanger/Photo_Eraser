@@ -15,33 +15,56 @@ class CollectionLayout: UICollectionViewLayout {
   
   override func prepare() {
     if _cache.isEmpty {
-      let columnWidth = contentWidth / CGFloat(columns)
-      var xOffset = [CGFloat]()
-      for column in 0..<columns {
-        xOffset.append(CGFloat(column) * columnWidth)
-      }
+    
       
-      var column = 0
-      var yOffset = Array<CGFloat>(repeating: 0, count: columns)
+      var xOffset: CGFloat = 0
+      let width = collectionView!.bounds.width
       
-      for item in 0..<collectionView!.numberOfItems(inSection: 0) {
+      for itemIndex in 0..<collectionView!.numberOfItems(inSection: 0) {
         
-        let indexPath = IndexPath(item: item, section: 0)
+        let indexPath = IndexPath(item: itemIndex, section: 0)
         
-        let height = columnWidth
-        let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
-        let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+        var frame = CGRect(x: xOffset, y: 0, width: width, height: contentHeight)
+        frame = frame.insetBy(dx: cellPadding, dy: cellPadding)
         
         let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-        attributes.frame = insetFrame
+        attributes.frame = frame
         _cache.append(attributes)
         
-        contentHeight = max(contentHeight, frame.maxY)
-        yOffset[column] = yOffset[column] + height
+        xOffset += width
         
-        column = (column + 1) % columns
       }
       
+      contentWidth = CGFloat(collectionView!.numberOfItems(inSection: 0)) * width
+      
+    
+//      let columnWidth = contentWidth / CGFloat(columns)
+//      var xOffset = [CGFloat]()
+//      for column in 0..<columns {
+//        xOffset.append(CGFloat(column) * columnWidth)
+//      }
+//      
+//      var column = 0
+//      var yOffset = Array<CGFloat>(repeating: 0, count: columns)
+//      
+//      for item in 0..<collectionView!.numberOfItems(inSection: 0) {
+//        
+//        let indexPath = IndexPath(item: item, section: 0)
+//        
+//        let height = columnWidth
+//        let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
+//        let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+//        
+//        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+//        attributes.frame = insetFrame
+//        _cache.append(attributes)
+//        
+//        contentHeight = max(contentHeight, frame.maxY)
+//        yOffset[column] = yOffset[column] + height
+//        
+//        column = (column + 1) % columns
+//      }
+//      
     }
   }
   
@@ -67,10 +90,11 @@ class CollectionLayout: UICollectionViewLayout {
     return attrs
   }
   
-  private var contentHeight: CGFloat = 0
-  private var contentWidth: CGFloat {
+  private var contentHeight: CGFloat {
     let insets = collectionView!.contentInset
-    return collectionView!.bounds.width - (insets.left + insets.right)
+    return collectionView!.bounds.height - (insets.top + insets.bottom)
   }
+  private var contentWidth: CGFloat = 0
+  
   private var _cache = [UICollectionViewLayoutAttributes]()
 }

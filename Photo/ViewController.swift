@@ -23,9 +23,26 @@ class ViewController: UIViewController {
     _collectionView.delegate = _dataSource
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    _collectionView.collectionViewLayout.invalidateLayout()
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
+  }
+  
+  @IBOutlet weak var _keepButton: UIButton!
+  @IBOutlet weak var _deleteButton: UIButton!
+  
+  @IBAction func _removeCurrent() {
+    _dataSource.deleteCurrent()
+  }
+  
+  @IBAction func _keepCurrent() {
+    _dataSource.keepCurrent()
   }
 
   @IBAction func deleteAction(_ sender: UIBarButtonItem) {
@@ -52,5 +69,10 @@ extension ViewController: ImageSourceOutupt {
   
   func canRemove(_ yesNo: Bool) {
     _trashButton.isEnabled = yesNo
+  }
+  
+  func interaction(started: Bool) {
+    _keepButton.isEnabled = !started
+    _deleteButton.isEnabled = !started
   }
 }

@@ -12,6 +12,7 @@ import Photos
 protocol ImageSourceOutupt: class {
   func reload()
   func canRemove(_ yesNo: Bool)
+  func interaction(started: Bool)
 }
 
 class ImageSource: NSObject {
@@ -32,6 +33,14 @@ class ImageSource: NSObject {
         }
       }
     }
+  }
+  
+  func deleteCurrent() {
+    print("Current item(\(_currentModelIndex)) deleted")
+  }
+  
+  func keepCurrent() {
+    print("Current item(\(_currentModelIndex)) kept")
   }
   
   func fetchNewBatch() {
@@ -67,6 +76,7 @@ class ImageSource: NSObject {
   fileprivate var _photoService = PhotoService()
   fileprivate var _models: [Photo] = []
   fileprivate var _modelsToDelete: [IndexPath: Photo] = [:]
+  fileprivate var _currentModelIndex = 0
 }
 
 extension ImageSource: ImageCellModelDatasource {
@@ -109,5 +119,20 @@ extension ImageSource: UICollectionViewDelegate, UICollectionViewDataSource {
     cell.update(with: m)
     
     output?.canRemove(_modelsToDelete.count > 0)
+  }
+  
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    output?.interaction(started: true)
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    let cellWidth = scrollView.contentSize.width / CGFloat(_models.count)
+    let offset = scrollView.contentOffset.x
+    
+    let number = (offset + cellWidth / 2) / cellWidth
+    
+    _currentModelIndex = Int(number)
+    
+    output?.interaction(started: false)
   }
 }

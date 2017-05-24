@@ -40,9 +40,13 @@ class PhotoAssetCacheService: PhotoAssetCacheServiceProtocol {
       completion(_cahce[id])
     } else {
       if let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).lastObject {
+      
+        let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
+        
         _imageManager.requestImage(
           for: asset,
-          targetSize: CGSize(width: 200, height: 200),
+          targetSize: CGSize(width: 300, height: 500),
           contentMode: .aspectFit,
           options: nil,
           resultHandler: { [weak self] (image, info) in
@@ -55,5 +59,5 @@ class PhotoAssetCacheService: PhotoAssetCacheServiceProtocol {
   }
   
   private var _cahce: [String: UIImage] = [:]
-  private var _imageManager = PHCachingImageManager()
+  private var _imageManager = PHImageManager.default()
 }

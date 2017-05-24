@@ -190,7 +190,7 @@ class InfoDbService {
     if result.count == 0 {
       let info = NSEntityDescription.insertNewObject(forEntityName: "DBInfo", into: context) as! DBInfo
       info.lastPhotoDate = Date(timeIntervalSince1970: 0) as NSDate
-      info.numberToShow = 100
+      info.numberToShow = 15
       return info
     }
     return result.first!
